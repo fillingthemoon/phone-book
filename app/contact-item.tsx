@@ -2,7 +2,7 @@
 
 import { useState, useContext } from 'react'
 
-import { EditContext, ContactContext } from './contacts'
+import { ContactContext } from './contacts'
 
 import { useContactFormField } from './new-contact-form'
 
@@ -26,12 +26,12 @@ export default function ContactItem(props: ContactProps) {
 
     const contactFormFields = [nameProps, phoneNumberProps, addressProps]
 
-    const { editContactId, setEditContactId } = useContext(EditContext)
+    const [editMode, setEditMode] = useState(false)
 
     const { contacts, setContacts } = useContext(ContactContext)
 
     const handleSave = () => {
-        setEditContactId(null)
+        setEditMode(false)
 
         const indexOfCurrEdit = contacts.findIndex(currContact => currContact.id === contact.id)
 
@@ -47,12 +47,12 @@ export default function ContactItem(props: ContactProps) {
 
     return (
         <div className="flex gap-4">
-            {editContactId !== contact.id
+            {!editMode
                 ? <>
                     <div>{contact.name}</div>
                     <div>{contact.phoneNumber}</div>
                     <div>{contact.address}</div>
-                    <button type="button" onClick={() => setEditContactId(contact.id)} disabled={editContactId !== null && (contact.id !== editContactId)}>Edit</button>
+                    <button type="button" onClick={() => setEditMode(true)}>Edit</button>
                 </>
                 : <>
                     {contactFormFields.map((formField, i) => (

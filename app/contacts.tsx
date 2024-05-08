@@ -19,38 +19,29 @@ interface ContactContextType {
     setContacts: Dispatch<SetStateAction<Contact[]>>
 }
 
-interface EditContextType {
-    editContactId: number | null
-    setEditContactId: Dispatch<SetStateAction<number | null>>
-}
-
 export const ContactContext = createContext<ContactContextType>({ contacts: defaultContacts, setContacts: () => { } });
-export const EditContext = createContext<EditContextType>({ editContactId: null, setEditContactId: () => { } });
 
 import NewContactForm from './new-contact-form'
 export default function Contacts() {
     const [searchVal, setSearchVal] = useState("")
     const [newContactForm, setNewContactForm] = useState(false)
     const [contacts, setContacts] = useState(defaultContacts)
-    const [editContactId, setEditContactId] = useState<number | null>(null)
 
     return (
         <ContactContext.Provider value={{ contacts: contacts, setContacts: setContacts }}>
-            <EditContext.Provider value={{ editContactId, setEditContactId }}>
-                <div className="flex flex-col">
-                    <button type="button" onClick={() => setNewContactForm(true)}>Add new contact</button>
-                    <input type="text" placeholder="Search for contact..." value={searchVal} onChange={(event) => setSearchVal(event.target.value)}></input>
-                    {contacts
-                        .filter((contact: Contact) => (
-                            contact.name.toUpperCase().includes(searchVal.toUpperCase())
-                            || searchVal.toUpperCase().includes(contact.name.toUpperCase()
-                            )))
-                        .map((contact: Contact, i) => (
-                            <ContactItem key={contact.id + contact.name + i} contact={contact} />
-                        ))}
-                    {newContactForm && <NewContactForm />}
-                </div>
-            </EditContext.Provider>
+            <div className="flex flex-col">
+                <button type="button" onClick={() => setNewContactForm(true)}>Add new contact</button>
+                <input type="text" placeholder="Search for contact..." value={searchVal} onChange={(event) => setSearchVal(event.target.value)}></input>
+                {contacts
+                    .filter((contact: Contact) => (
+                        contact.name.toUpperCase().includes(searchVal.toUpperCase())
+                        || searchVal.toUpperCase().includes(contact.name.toUpperCase()
+                        )))
+                    .map((contact: Contact, i) => (
+                        <ContactItem key={contact.id + contact.name + i} contact={contact} />
+                    ))}
+                {newContactForm && <NewContactForm />}
+            </div>
         </ContactContext.Provider>
     )
 }

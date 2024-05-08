@@ -41,10 +41,7 @@ export default function Contacts() {
                     <button type="button" onClick={() => setNewContactForm(true)}>Add new contact</button>
                     <input type="text" placeholder="Search for contact..." value={searchVal} onChange={(event) => setSearchVal(event.target.value)}></input>
                     {contacts
-                        .filter((contact: Contact) => (
-                            contact.name.toUpperCase().includes(searchVal.toUpperCase())
-                            || searchVal.toUpperCase().includes(contact.name.toUpperCase()
-                            )))
+                        .filter((contact: Contact) => contact.name.toUpperCase().includes(searchVal.toUpperCase()))
                         .map((contact: Contact, i) => (
                             <ContactItem key={contact.id + contact.name + i} contact={contact} />
                         ))}

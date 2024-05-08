@@ -13,10 +13,15 @@ export const useContactFormField = (initialValue: string, placeholder: string | 
         setValue(event.target.value)
     }
 
+    const reset = () => {
+        setValue("")
+    }
+
     return {
         value,
         onChange: handleChange,
-        ...(placeholder && { placeholder })
+        ...(placeholder && { placeholder }),
+        reset,
     }
 }
 
@@ -25,7 +30,7 @@ export default function NewContactForm() {
     const phoneNumberProps = useContactFormField("", "phoneNumber")
     const addressProps = useContactFormField("", "address")
 
-    const contactFormFields = [nameProps, phoneNumberProps, addressProps]
+    const contactFormFieldProps = [nameProps, phoneNumberProps, addressProps]
 
     const { contacts, setContacts } = useContext(ContactContext)
 
@@ -39,16 +44,22 @@ export default function NewContactForm() {
                 address: addressProps.value,
             }
         ])
+
+        contactFormFieldProps.forEach(formFieldProps => formFieldProps.reset())
     }
 
     return (
         <div className="flex flex-col">
-            {contactFormFields.map((formField, i) => (
-                <input
-                    key={i}
-                    {...formField}
-                />
-            ))}
+            {contactFormFieldProps.map((formFieldProps, i) => {
+                const { reset, ...rest } = formFieldProps
+
+                return (
+                    <input
+                        key={i}
+                        {...rest}
+                    />
+                )
+            })}
             <button type="button" onClick={handleSubmitForm}>Submit</button>
         </div>
     )

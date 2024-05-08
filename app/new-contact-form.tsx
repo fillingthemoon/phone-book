@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
+import { AppContext } from './contacts'
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -19,22 +21,34 @@ const useContactFormField = (placeholder: string) => {
 }
 
 export default function NewContactForm() {
-    const firstnameProps = useContactFormField("firstname")
-    const lastnameProps = useContactFormField("lastname")
-    const emailProps = useContactFormField("email")
-    const phoneProps = useContactFormField("phone")
-    const birthdayProps = useContactFormField("birthday")
+    const nameProps = useContactFormField("name")
+    const phoneNumberProps = useContactFormField("phoneNumber")
+    const addressProps = useContactFormField("address")
 
-    const contactFormFields = [firstnameProps, lastnameProps, emailProps, phoneProps, birthdayProps]
+    const contactFormFields = [nameProps, phoneNumberProps, addressProps]
+
+    const { contacts, setContacts } = useContext(AppContext)
+
+    const handleSubmitForm = () => {
+        setContacts([
+            ...contacts,
+            {
+                name: nameProps.value,
+                phoneNumber: phoneNumberProps.value,
+                address: addressProps.value,
+            }
+        ])
+    }
 
     return (
-        <div className="flex-col">
+        <div className="flex flex-col">
             {contactFormFields.map((formField, i) => (
                 <input
                     key={formField.placeholder + i}
                     {...formField}
                 />
             ))}
+            <button type="button" onClick={handleSubmitForm}>Submit</button>
         </div>
     )
 }

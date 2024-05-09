@@ -1,8 +1,6 @@
 'use client'
 
-import { useState, useContext, SetStateAction, Dispatch } from 'react'
-
-import { EditContext } from './contacts'
+import { useState, SetStateAction, Dispatch } from 'react'
 
 import { useContactFormField } from './new-contact-form'
 
@@ -17,10 +15,12 @@ interface ContactItemProps {
     contact: Contact
     contacts: Contact[]
     setContacts: Dispatch<SetStateAction<Contact[]>>
+    currEditingContacts: number[]
+    setCurrEditingContacts: Dispatch<SetStateAction<number[]>>
 }
 
 export default function ContactItem(props: ContactItemProps) {
-    const { contacts, setContacts, contact } = props
+    const { contact, contacts, setContacts, currEditingContacts, setCurrEditingContacts } = props
 
     const nameProps = useContactFormField(contact.name, null)
     const phoneNumberProps = useContactFormField(contact.phoneNumber, null)
@@ -30,7 +30,6 @@ export default function ContactItem(props: ContactItemProps) {
 
     const [editMode, setEditMode] = useState(false)
 
-    const { currEditingContacts, setCurrEditingContacts } = useContext(EditContext)
 
     const handleEnterEditingMode = () => {
         setEditMode(true)
@@ -74,8 +73,15 @@ export default function ContactItem(props: ContactItemProps) {
                     <div>{contact.name}</div>
                     <div>{contact.phoneNumber}</div>
                     <div>{contact.address}</div>
-                    <button type="button" onClick={() => handleEnterEditingMode()}>Edit</button>
-                    <button type="button" disabled={currEditingContacts.length > 0} onClick={() => handleDeleteContact()}>Delete</button>
+                    <button
+                        type="button"
+                        onClick={() => handleEnterEditingMode()}
+                    >Edit</button>
+                    <button
+                        type="button"
+                        disabled={currEditingContacts.length > 0}
+                        onClick={() => handleDeleteContact()}
+                    >Delete</button>
                 </>
                 : <>
                     {contactFormFieldProps.map((formFieldProps, i) => {

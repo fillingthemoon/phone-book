@@ -107,7 +107,7 @@ export default function ContactItem(props: ContactItemProps) {
           <IconButton
             aria-label="Delete contact"
             colorScheme="red"
-            disabled={currEditingContacts.length > 0}
+            isDisabled={currEditingContacts.length > 0}
             onClick={() => handleDeleteContact()}
             icon={<DeleteIcon />}
           />

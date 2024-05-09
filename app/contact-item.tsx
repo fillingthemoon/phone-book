@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useContext } from 'react'
+import { useState, useContext, SetStateAction, Dispatch } from 'react'
 
-import { EditContext, ContactContext } from './contacts'
+import { EditContext } from './contacts'
 
 import { useContactFormField } from './new-contact-form'
 
@@ -13,12 +13,14 @@ export interface Contact {
     address: string
 }
 
-interface ContactProps {
+interface ContactItemProps {
     contact: Contact
+    contacts: Contact[]
+    setContacts: Dispatch<SetStateAction<Contact[]>>
 }
 
-export default function ContactItem(props: ContactProps) {
-    const { contact } = props
+export default function ContactItem(props: ContactItemProps) {
+    const { contacts, setContacts, contact } = props
 
     const nameProps = useContactFormField(contact.name, null)
     const phoneNumberProps = useContactFormField(contact.phoneNumber, null)
@@ -28,7 +30,6 @@ export default function ContactItem(props: ContactProps) {
 
     const [editMode, setEditMode] = useState(false)
 
-    const { contacts, setContacts } = useContext(ContactContext)
     const { currEditingContacts, setCurrEditingContacts } = useContext(EditContext)
 
     const handleEnterEditingMode = () => {
@@ -52,6 +53,7 @@ export default function ContactItem(props: ContactProps) {
         })
 
         setContacts(updatedContacts)
+        window.localStorage.setItem('contacts', JSON.stringify(updatedContacts))
 
         const editingContactsIndexOfCurr = currEditingContacts.findIndex(currEditContId => currEditContId === contact.id)
         const updatedCurrEditingContacts = currEditingContacts.toSpliced(editingContactsIndexOfCurr, 1)
@@ -62,6 +64,7 @@ export default function ContactItem(props: ContactProps) {
         const indexOfCurrContact = contacts.findIndex(currContact => currContact.id === contact.id)
         const updatedContacts = contacts.toSpliced(indexOfCurrContact, 1)
         setContacts(updatedContacts)
+        window.localStorage.setItem('contacts', JSON.stringify(updatedContacts))
     }
 
     return (

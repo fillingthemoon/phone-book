@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useContext } from 'react';
+import { useState, SetStateAction, Dispatch } from 'react';
 
-import { ContactContext } from './contacts'
+import { Contact } from './contact-item'
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -25,17 +25,22 @@ export const useContactFormField = (initialValue: string, placeholder: string | 
     }
 }
 
-export default function NewContactForm() {
+interface NewContactFormProps {
+    contacts: Contact[]
+    setContacts: Dispatch<SetStateAction<Contact[]>>
+}
+
+export default function NewContactForm(props: NewContactFormProps) {
+    const { contacts, setContacts } = props
+
     const nameProps = useContactFormField("", "name")
     const phoneNumberProps = useContactFormField("", "phoneNumber")
     const addressProps = useContactFormField("", "address")
 
     const contactFormFieldProps = [nameProps, phoneNumberProps, addressProps]
 
-    const { contacts, setContacts } = useContext(ContactContext)
-
     const handleSubmitForm = () => {
-        setContacts([
+        const updatedContacts = [
             ...contacts,
             {
                 id: Math.max(...contacts.map(contact => contact.id)) + 1,
@@ -43,7 +48,10 @@ export default function NewContactForm() {
                 phoneNumber: phoneNumberProps.value,
                 address: addressProps.value,
             }
-        ])
+        ]
+
+        setContacts(updatedContacts)
+        localStorage.setItem('contacts', JSON.stringify(updatedContacts))
 
         contactFormFieldProps.forEach(formFieldProps => formFieldProps.reset())
     }

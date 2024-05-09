@@ -1,4 +1,4 @@
-import Contacts, { Contact } from './contacts'
+import Contacts from './contacts'
 
 export default async function Home() {
 

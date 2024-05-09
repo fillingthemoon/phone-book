@@ -43,7 +43,7 @@ export const useContactFormField = (initialValue: string, placeholder: string | 
 
 interface NewContactFormProps {
     contacts: Contact[]
-    setContacts: Dispatch<SetStateAction<Contact[]>>
+    setContacts: Dispatch<SetStateAction<Contact[] | null>>
     isOpen: boolean
     onClose: () => void
 }

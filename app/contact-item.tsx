@@ -23,7 +23,7 @@ export interface Contact {
 interface ContactItemProps {
     contact: Contact
     contacts: Contact[]
-    setContacts: Dispatch<SetStateAction<Contact[]>>
+    setContacts: Dispatch<SetStateAction<Contact[] | null>>
     currEditingContacts: number[]
     setCurrEditingContacts: Dispatch<SetStateAction<number[]>>
 }
@@ -97,7 +97,7 @@ export default function ContactItem(props: ContactItemProps) {
                 </Flex>
             </Td>
         </Tr>
-        : <>
+        : <Tr>
             {contactFormFieldProps.map((formFieldProps, i) => {
                 const { reset, ...rest } = formFieldProps
 
@@ -117,5 +117,5 @@ export default function ContactItem(props: ContactItemProps) {
                     >Save</Button>
                 </Flex>
             </Td>
-        </>
+        </Tr>
 }

@@ -8,6 +8,7 @@ import {
     Text,
     Input,
     Button,
+    Link,
 
     TableContainer,
     Table,
@@ -22,6 +23,7 @@ import {
 } from '@chakra-ui/react'
 
 import ContactItem, { Contact } from './contact-item'
+import { FaGithub } from 'react-icons/fa'
 
 import NewContactForm from './new-contact-form'
 export default function Contacts() {
@@ -64,7 +66,22 @@ export default function Contacts() {
     return (
         <Container maxW="container.xl" my={10}>
             <Flex flexDirection="column">
-                <Text fontSize="3.5rem" fontWeight={700}>Phone book ☎️</Text>
+                <Flex justifyContent="space-between" alignItems="center" mb={10}>
+                    <Text fontSize="3.5rem" fontWeight={700}>Phone Book ☎️</Text>
+                    <Link
+                        fontSize="60px"
+                        transition="0.2s"
+                        _hover={{
+                            transition: '0.2s',
+                            color: '#6e5494',
+                        }}
+                        href="https://www.google.com"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <FaGithub />
+                    </Link>
+                </Flex>
                 <Flex my={6} justifyContent="space-between" gap={2} flexDirection={{ sm: 'column', md: 'row' }}>
                     <Input
                         type="text"

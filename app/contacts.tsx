@@ -40,16 +40,19 @@ export default function Contacts() {
         <Container maxW="container.xl" my={10}>
             <Flex flexDirection="column">
                 <Text fontSize="3.5rem" fontWeight={700}>Phone book</Text>
-                <Flex my={6} gap={4}>
-                    <Input
-                        maxW="400px"
-                        type="text"
-                        placeholder="Search for contact..."
-                        value={searchVal}
-                        onChange={(event: React.FormEvent<HTMLInputElement>) => setSearchVal(event.currentTarget.value)}
-                    />
-                    <Button colorScheme="blue" onClick={onOpen}>Add contact</Button>
-                    {contacts && <NewContactForm contacts={contacts} setContacts={setContacts} isOpen={isOpen} onClose={onClose} />}
+                <Flex my={6} justifyContent="space-between">
+                    <Flex gap={4}>
+                        <Input
+                            maxW="400px"
+                            type="text"
+                            placeholder="Search for contact..."
+                            value={searchVal}
+                            onChange={(event: React.FormEvent<HTMLInputElement>) => setSearchVal(event.currentTarget.value)}
+                        />
+                        <Button colorScheme="blue" width="180px" onClick={onOpen}>Add contact</Button>
+                        {contacts && <NewContactForm contacts={contacts} setContacts={setContacts} isOpen={isOpen} onClose={onClose} />}
+                    </Flex>
+                    <Button colorScheme="purple" onClick={onOpen}>Add 100 mock contacts</Button>
                 </Flex>
                 {!contacts
                     ? <Flex my={10} flexDirection="column" alignItems="center" gap={6}>

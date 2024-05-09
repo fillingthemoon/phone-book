@@ -7,10 +7,13 @@ import { useContactFormField } from './new-contact-form'
 import {
     Flex,
     Button,
+    IconButton,
     Input,
     Tr,
     Td,
 } from '@chakra-ui/react'
+
+import { EditIcon, DeleteIcon, CheckIcon } from '@chakra-ui/icons'
 
 export interface Contact {
     id: number
@@ -85,15 +88,8 @@ export default function ContactItem(props: ContactItemProps) {
                 ))}
             <Td >
                 <Flex gap={2}>
-                    <Button
-                        colorScheme='blue'
-                        onClick={() => handleEnterEditingMode()}
-                    >Edit</Button>
-                    <Button
-                        colorScheme='red'
-                        disabled={currEditingContacts.length > 0}
-                        onClick={() => handleDeleteContact()}
-                    >Delete</Button>
+                    <IconButton aria-label='Edit contact' colorScheme='yellow' onClick={() => handleEnterEditingMode()} icon={<EditIcon />} />
+                    <IconButton aria-label='Delete contact' colorScheme='red' disabled={currEditingContacts.length > 0} onClick={() => handleDeleteContact()} icon={<DeleteIcon />} />
                 </Flex>
             </Td>
         </Tr>
@@ -111,10 +107,7 @@ export default function ContactItem(props: ContactItemProps) {
             })}
             <Td>
                 <Flex gap={2}>
-                    <Button
-                        colorScheme='blue'
-                        onClick={() => handleSave()}
-                    >Save</Button>
+                    <IconButton aria-label='Save contact' colorScheme='green' onClick={() => handleSave()} icon={<CheckIcon />} />
                 </Flex>
             </Td>
         </Tr>

@@ -4,10 +4,19 @@ import { useState, SetStateAction, Dispatch } from 'react'
 
 import { useContactFormField } from './new-contact-form'
 
+import {
+    Flex,
+    Button,
+    Input,
+    Tr,
+    Td,
+} from '@chakra-ui/react'
+
 export interface Contact {
     id: number
     name: string
     phoneNumber: string
+    emailAddress: string
     address: string
 }
 
@@ -24,9 +33,10 @@ export default function ContactItem(props: ContactItemProps) {
 
     const nameProps = useContactFormField(contact.name, null)
     const phoneNumberProps = useContactFormField(contact.phoneNumber, null)
+    const emailAddressProps = useContactFormField(contact.emailAddress, null)
     const addressProps = useContactFormField(contact.address, null)
 
-    const contactFormFieldProps = [nameProps, phoneNumberProps, addressProps]
+    const contactFormFieldProps = [nameProps, phoneNumberProps, emailAddressProps, addressProps]
 
     const [editMode, setEditMode] = useState(false)
 
@@ -48,6 +58,7 @@ export default function ContactItem(props: ContactItemProps) {
             id: contact.id,
             name: nameProps.value,
             phoneNumber: phoneNumberProps.value,
+            emailAddress: emailAddressProps.value,
             address: addressProps.value,
         })
 
@@ -66,37 +77,45 @@ export default function ContactItem(props: ContactItemProps) {
         window.localStorage.setItem('contacts', JSON.stringify(updatedContacts))
     }
 
-    return (
-        <div className="flex gap-4">
-            {!editMode
-                ? <>
-                    <div>{contact.name}</div>
-                    <div>{contact.phoneNumber}</div>
-                    <div>{contact.address}</div>
-                    <button
-                        type="button"
+    return !editMode
+        ? <Tr>
+            {Object.keys(contact).slice(1)
+                .map((field: string, j: number) => (
+                    <Td key={field + j}>{contact[field as keyof Contact]}</Td>
+                ))}
+            <Td >
+                <Flex gap={2}>
+                    <Button
+                        colorScheme='blue'
                         onClick={() => handleEnterEditingMode()}
-                    >Edit</button>
-                    <button
-                        type="button"
+                    >Edit</Button>
+                    <Button
+                        colorScheme='red'
                         disabled={currEditingContacts.length > 0}
                         onClick={() => handleDeleteContact()}
-                    >Delete</button>
-                </>
-                : <>
-                    {contactFormFieldProps.map((formFieldProps, i) => {
-                        const { reset, ...rest } = formFieldProps
+                    >Delete</Button>
+                </Flex>
+            </Td>
+        </Tr>
+        : <>
+            {contactFormFieldProps.map((formFieldProps, i) => {
+                const { reset, ...rest } = formFieldProps
 
-                        return (
-                            <input
-                                key={i}
-                                {...rest}
-                            />
-                        )
-                    })}
-                    <button type="button" onClick={handleSave}>Save</button>
-                </>
-            }
-        </div>
-    )
+                return (
+                    <Td key={i}>
+                        <Input
+                            {...rest}
+                        />
+                    </Td>
+                )
+            })}
+            <Td>
+                <Flex gap={2}>
+                    <Button
+                        colorScheme='blue'
+                        onClick={() => handleSave()}
+                    >Save</Button>
+                </Flex>
+            </Td>
+        </>
 }

@@ -43,7 +43,7 @@ export const useContactFormField = (initialValue: string, placeholder: string | 
 
 interface NewContactFormProps {
     contacts: Contact[]
-    setContacts: Dispatch<SetStateAction<Contact[] | null>>
+    setContacts: Dispatch<SetStateAction<Contact[]>>
     isOpen: boolean
     onClose: () => void
 }
@@ -112,10 +112,10 @@ export default function NewContactForm(props: NewContactFormProps) {
                         </Flex>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
+                        <Button  variant="outline" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant='ghost' onClick={handleSubmitForm}>Add</Button>
+                        <Button colorScheme="blue" onClick={handleSubmitForm}>Add</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

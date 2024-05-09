@@ -26,7 +26,7 @@ export interface Contact {
 interface ContactItemProps {
     contact: Contact
     contacts: Contact[]
-    setContacts: Dispatch<SetStateAction<Contact[] | null>>
+    setContacts: Dispatch<SetStateAction<Contact[]>>
     currEditingContacts: number[]
     setCurrEditingContacts: Dispatch<SetStateAction<number[]>>
 }
@@ -88,7 +88,7 @@ export default function ContactItem(props: ContactItemProps) {
                 ))}
             <Td >
                 <Flex gap={2}>
-                    <IconButton aria-label='Edit contact' colorScheme='yellow' onClick={() => handleEnterEditingMode()} icon={<EditIcon />} />
+                    <IconButton aria-label='Edit contact' colorScheme='blue' onClick={() => handleEnterEditingMode()} icon={<EditIcon />} />
                     <IconButton aria-label='Delete contact' colorScheme='red' disabled={currEditingContacts.length > 0} onClick={() => handleDeleteContact()} icon={<DeleteIcon />} />
                 </Flex>
             </Td>

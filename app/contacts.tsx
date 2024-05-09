@@ -25,8 +25,9 @@ import ContactItem, { Contact } from './contact-item'
 
 import NewContactForm from './new-contact-form'
 export default function Contacts() {
+    const [isLoading, setIsLoading] = useState(true)
     const [searchVal, setSearchVal] = useState("")
-    const [contacts, setContacts] = useState<Contact[] | null>(null)
+    const [contacts, setContacts] = useState<Contact[]>([])
     const [currEditingContacts, setCurrEditingContacts] = useState<number[]>([])
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -34,27 +35,50 @@ export default function Contacts() {
     useEffect(() => {
         const initialContacts = localStorage.getItem('contacts') || ''
         setContacts(initialContacts ? JSON.parse(initialContacts) : [])
+        setIsLoading(false)
     }, [])
+
+    const handleAddMockContacts = async () => {
+        setIsLoading(true)
+        const mockContacts = await fetch('https://fakerapi.it/api/v1/persons?_quantity=10')
+        const mockContactsJSON = await mockContacts.json()
+
+        const mockContactsFiltered = mockContactsJSON.data.map((mockContact: any) => ({
+            id: Math.max(...contacts.map(contact => contact.id)) + 1,
+            name: mockContact.firstname + " " + mockContact.lastname,
+            phoneNumber: mockContact.phone,
+            emailAddress: mockContact.email,
+            address: mockContact.address.street,
+        }))
+
+        const updatedContacts = [
+            ...contacts,
+            ...mockContactsFiltered,
+        ]
+
+        setContacts(updatedContacts)
+        localStorage.setItem('contacts', JSON.stringify(updatedContacts))
+        setIsLoading(false)
+    }
 
     return (
         <Container maxW="container.xl" my={10}>
             <Flex flexDirection="column">
-                <Text fontSize="3.5rem" fontWeight={700}>Phone book</Text>
-                <Flex my={6} justifyContent="space-between">
-                    <Flex gap={4}>
-                        <Input
-                            maxW="400px"
-                            type="text"
-                            placeholder="Search for contact..."
-                            value={searchVal}
-                            onChange={(event: React.FormEvent<HTMLInputElement>) => setSearchVal(event.currentTarget.value)}
-                        />
-                        <Button colorScheme="blue" width="180px" onClick={onOpen}>Add contact</Button>
+                <Text fontSize="3.5rem" fontWeight={700}>Phone book ☎️</Text>
+                <Flex my={6} justifyContent="space-between" gap={2} flexDirection={{ sm: 'column', md: 'row' }}>
+                    <Input
+                        type="text"
+                        placeholder="Search for contact..."
+                        value={searchVal}
+                        onChange={(event: React.FormEvent<HTMLInputElement>) => setSearchVal(event.currentTarget.value)}
+                    />
+                    <Flex gap={2}>
+                        <Button colorScheme="blue" onClick={onOpen}>Add contact</Button>
                         {contacts && <NewContactForm contacts={contacts} setContacts={setContacts} isOpen={isOpen} onClose={onClose} />}
+                        <Button colorScheme="purple" onClick={handleAddMockContacts}>Add 10 mock contacts</Button>
                     </Flex>
-                    <Button colorScheme="purple" onClick={onOpen}>Add 100 mock contacts</Button>
                 </Flex>
-                {!contacts
+                {isLoading
                     ? <Flex my={10} flexDirection="column" alignItems="center" gap={6}>
                         <Spinner
                             thickness="4px"

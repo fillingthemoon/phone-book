@@ -71,7 +71,7 @@ export default function NewContactForm(props: NewContactFormProps) {
       const updatedContacts = [
         ...contacts,
         {
-          id: Math.max(...contacts.map((contact) => contact.id)) + 1,
+          id: window.crypto.randomUUID(),
           name: nameProps.value,
           phoneNumber: phoneNumberProps.value,
           emailAddress: emailAddressProps.value,

@@ -9,7 +9,7 @@ import { Flex, Button, IconButton, Input, Tr, Td } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, CheckIcon } from "@chakra-ui/icons";
 
 export interface Contact {
-  id: number;
+  id: string;
   name: string;
   phoneNumber: string;
   emailAddress: string;
@@ -20,8 +20,8 @@ interface ContactItemProps {
   contact: Contact;
   contacts: Contact[];
   setContacts: Dispatch<SetStateAction<Contact[]>>;
-  currEditingContacts: number[];
-  setCurrEditingContacts: Dispatch<SetStateAction<number[]>>;
+  currEditingContacts: string[];
+  setCurrEditingContacts: Dispatch<SetStateAction<string[]>>;
 }
 
 export default function ContactItem(props: ContactItemProps) {

@@ -1,6 +1,4 @@
-This is a Phone Book application ☎️.
-
-Check out the live application @ https:
+Check out this live Phone Book application @ https://phone-book-illum.vercel.app/ ☎️
 
 Tech stack:
 - Next.js

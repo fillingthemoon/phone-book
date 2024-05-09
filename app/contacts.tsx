@@ -75,7 +75,7 @@ export default function Contacts() {
                             transition: "0.2s",
                             color: "#6e5494",
                         }}
-                        href="https://www.google.com"
+                        href="https://github.com/fillingthemoon/phone-book"
                         target="_blank"
                         rel="noreferrer"
                     >
